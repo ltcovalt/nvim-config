@@ -1,0 +1,3 @@
+# ignore os metadata files
+.DS_Store
+Thumbs.db
