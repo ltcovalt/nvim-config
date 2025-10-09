@@ -7,5 +7,5 @@ Install ripgrep (rg) - needed for Telescope fuzzy-find
 `sudo dnf install ripgrep`
 
 Install fd - needed for file searching
-`sudo dnf install fd-find`:w
+`sudo dnf install fd-find`
 
