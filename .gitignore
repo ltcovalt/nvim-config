@@ -1,3 +1,7 @@
-# ignore os metadata files
-.DS_Store
-Thumbs.db
+tags
+test.sh
+.luarc.json
+nvim
+
+spell/
+lazy-lock.json
