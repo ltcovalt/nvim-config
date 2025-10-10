@@ -10,7 +10,7 @@ vim.g.have_nerd_font = false
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
+-- For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.o.number = true
@@ -71,14 +71,13 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.o.scrolloff = 10
+vim.o.scrolloff = 8
 
--- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
--- instead raise a dialog asking if you wish to save the current file(s)
--- See `:help 'confirm'`
+-- When closing an unsaved file, confirm if file should be saved
+--  See `:help 'confirm'`
 vim.o.confirm = true
 
--- [[ Basic Keymaps ]]
+-- NOTE: [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
 -- Clear highlights on search when pressing <Esc> in normal mode
@@ -92,8 +91,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc.
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
---  Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
+-- Split window navigation keymaps
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -104,7 +102,6 @@ vim.keymap.set('n', '<C-Up>', '<C-w><C-k>', { desc = 'Move focus to the upper wi
 --  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
 --  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -149,23 +146,8 @@ require('lazy').setup({
   -- keys can be used to configure plugin behavior/loading/etc.
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
-  --
-
-  -- Alternatively, use `config = function() ... end` for full control over the configuration.
-  -- If you prefer to call `setup` explicitly, use:
-  --    {
-  --        'lewis6991/gitsigns.nvim',
-  --        config = function()
-  --            require('gitsigns').setup({
-  --                -- Your gitsigns configuration here
-  --            })
-  --        end,
-  --    }
-  --
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`.
-  --
   -- See `:help gitsigns` to understand what the configuration keys do
+
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -199,7 +181,7 @@ require('lazy').setup({
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.o.timeoutlen
-      delay = 0,
+      delay = 100,
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
@@ -261,8 +243,7 @@ require('lazy').setup({
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
         'nvim-telescope/telescope-fzf-native.nvim',
 
-        -- `build` is used to run some command when the plugin is installed/updated.
-        -- This is only run then, not every time Neovim starts up.
+        -- `build` is only ran when the plugin is initially installed or updated
         build = 'make',
 
         -- `cond` is a condition used to determine whether this plugin should be
@@ -357,7 +338,7 @@ require('lazy').setup({
     end,
   },
 
-  -- LSP Plugins
+  -- NOTE: LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
@@ -370,13 +351,14 @@ require('lazy').setup({
       },
     },
   },
+
+  -- NOTE: LSP Main Configuration
   {
-    -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
+      -- `opts = {}` is the same as calling `require('mason').setup({})`
       { 'mason-org/mason.nvim', opts = {} },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -388,31 +370,6 @@ require('lazy').setup({
       'saghen/blink.cmp',
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -420,10 +377,7 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-          -- to define small helper and utility functions so you don't have to repeat yourself.
-          --
-          -- In this case, we create a function that lets us more easily define mappings specific
+          -- create a map function that lets us more easily define mappings specific
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
@@ -566,18 +520,14 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
+        clangd = {},
+        gopls = {},
+        pyright = {},
         -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
+        --   https://github.com/pmizio/typescript-tools.nvim
+        --   but for many setups, the LSP (`ts_ls`) will work just fine
+        ts_ls = {},
+        -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
 
         lua_ls = {
           -- cmd = { ... },
@@ -771,10 +721,8 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
+  -- NOTE: Colorschemes
+  {
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
@@ -785,11 +733,15 @@ require('lazy').setup({
           comments = { italic = false }, -- Disable italics in comments
         },
       }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+    end,
+  },
+  {
+    'sainnhe/sonokai',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.g.sonokai_enable_italic = true
+      vim.cmd.colorscheme 'sonokai'
     end,
   },
 
