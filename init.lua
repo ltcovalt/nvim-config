@@ -1,22 +1,44 @@
+-- NOTE: [[ OS Detection ]]
+local os_name = (vim.uv or vim.loop).os_uname().sysname
+local IS_OS_WINDOWS = os_name == 'Windows_NT'
+local IS_OS_MAC = os_name == 'Darwin'
+local IS_OS_LINUX = os_name == 'Linux'
+
+-- normalize path names and convert to lowercase
+-- prevents duplicate LSPs from attaching to c:filename and C:filename separately
+local function normalize_path(path)
+  path = vim.fs.normalize(path)
+  if IS_OS_WINDOWS then
+    path = path:gsub('^%a', string.lower)
+  end
+  return path
+end
+
+-- NOTE: [[ VIM Global Variables ]]
+vim.g.os_name = os_name
+vim.g.is_os_windows = IS_OS_WINDOWS
+vim.g.is_os_mac = IS_OS_MAC
+vim.g.is_os_linux = IS_OS_LINUX
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+-- Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
--- [[ Setting options ]]
+-- NOTE: [[ Setting options ]]
+--
 -- See `:help vim.o`
--- NOTE: You can change these options as you wish!
 -- For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.o.number = true
 vim.o.relativenumber = true
 
--- Enable mouse mode, can be useful for resizing splits for example!
+-- Enable mouse mode for all modes, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
@@ -277,7 +299,8 @@ require('lazy').setup({
       -- Telescope picker. This is really useful to discover what Telescope can
       -- do as well as how to actually do it!
 
-      -- [[ Configure Telescope ]]
+      -- NOTE: [[ Configure Telescope ]]
+      --
       -- See `:help telescope` and `:help telescope.setup()`
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
@@ -509,27 +532,15 @@ require('lazy').setup({
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
-
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
         gopls = {},
         pyright = {},
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --   https://github.com/pmizio/typescript-tools.nvim
-        --   but for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
         -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
 
         lua_ls = {
+          root_dir = normalize_path(vim.fn.stdpath 'config'),
           -- cmd = { ... },
           -- filetypes = { ... },
           -- capabilities = {},
@@ -548,10 +559,7 @@ require('lazy').setup({
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
-      -- other tools, you can run
-      --    :Mason
-      --
-      -- You can press `g?` for help in this menu.
+      -- other tools, you can run :Mason
       --
       -- `mason` had to be setup earlier: to configure its options see the
       -- `dependencies` table for `nvim-lspconfig` above.
