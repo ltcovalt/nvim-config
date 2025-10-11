@@ -92,20 +92,22 @@ require('lazy').setup({
   -- { import = 'plugins' },
 
   -- NOTE: or plugins can be imported individually
-  { import = 'plugins.which-key' }, -- displays live previews when typing keybinds
-  { import = 'plugins.gitsigns' }, -- add git status lines beside line numbers
-  { import = 'plugins.neo-tree' }, -- directory browser
   { import = 'plugins.autopairs' }, -- inserts [({})] in matching pairs
-  { import = 'plugins.indent_line' }, -- displays visual line indents
-  { import = 'plugins.telescope' }, -- telescope fuzzy finder
-  { import = 'plugins.lazydev' }, -- configures LUA LSP for nvim congigs
-  { import = 'plugins.nvim-lspconfig' }, -- main LSP configuration
-  { import = 'plugins.conform' }, -- auto-formatting
   { import = 'plugins.blink' }, -- auto-completiont
   { import = 'plugins.colorschemes' }, -- additional themes/colorschemes
-  { import = 'plugins.todo-comments' }, -- todo/note/warn
+  { import = 'plugins.conform' }, -- auto-formatting
+  -- { import = 'plugins.debug' }, -- dap plugin for debugging code, configured for golang by default
+  { import = 'plugins.gitsigns' }, -- add git status lines beside line numbers
+  { import = 'plugins.indent_line' }, -- displays visual line indents
+  { import = 'plugins.lazydev' }, -- configures LUA LSP for nvim congigs
+  -- { import = 'plugins.lint' }, -- provides multiple linters
   { import = 'plugins.mini' }, -- collection of small plugins
+  { import = 'plugins.neo-tree' }, -- directory browser
+  { import = 'plugins.nvim-lspconfig' }, -- main LSP configuration
   { import = 'plugins.nvim-treesitter' }, -- highlight, edit, and navigate code
+  { import = 'plugins.telescope' }, -- telescope fuzzy finder
+  { import = 'plugins.todo-comments' }, -- todo/note/warn
+  { import = 'plugins.which-key' }, -- displays live previews when typing keybinds
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
