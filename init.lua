@@ -1,4 +1,4 @@
--- NOTE: [[ VIM Globals ]]
+-- NOTE: [[ VIM GLOBALS ]]
 --
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -9,7 +9,7 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
--- NOTE: [[ VIM Options ]]
+-- NOTE: [[ VIM OPTIONS ]]
 -- see `:help vim.o`
 -- for more options, see `:help option-list`
 
@@ -34,6 +34,9 @@ vim.o.updatetime = 250 -- decrease update time
 vim.o.timeoutlen = 300 -- Decrease mapped sequence wait time
 vim.o.splitright = true -- vertical splits to open to the right
 vim.o.splitbelow = true -- horizontal splits open to the bottom
+vim.opt.termguicolors = true -- enable 24 bit color in the TUI
+vim.o.timeout = true -- enable mapped key timeout
+vim.o.timeoutlen = 500 -- 500ms timeout for multi-key mappings
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
@@ -51,15 +54,15 @@ vim.o.cursorline = true -- highlight the line the cursor is on
 vim.o.scrolloff = 8 -- number of lines to keep visible above and below the cursor
 vim.o.confirm = true -- show confirm dialog when closing an unsaved buffer
 
--- NOTE: [[ Keymaps ]]
+-- NOTE: [[ KEYMAPS ]]
 --  See `:help vim.keymap.set()`
 require 'keymaps'
 
--- NOTE: [[ Autocommands ]]
+-- NOTE: [[ AUTOCOMMANDS ]]
 --  See `:help lua-guide-autocommands`
 require 'autocommands'
 
--- NOTE: [[ Install `lazy.nvim` plugin manager ]]
+-- NOTE: [[ PLUGIN MANAGER: install lazy.nvim ]]
 --  See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -74,7 +77,7 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
--- NOTE: [[ Configure and install lazy plugins ]]
+-- NOTE: [[ PLUGINS: install lazy plugins ]]
 -- check the current status of lazy plugins by running :Lazy
 -- use `?` for help and `:q` to close the lazy window
 require('lazy').setup({
@@ -93,7 +96,7 @@ require('lazy').setup({
 
   -- NOTE: or plugins can be imported individually
   { import = 'plugins.autopairs' }, -- inserts [({})] in matching pairs
-  { import = 'plugins.blink' }, -- auto-completiont
+  { import = 'plugins.blink' }, -- auto-completion
   { import = 'plugins.colorschemes' }, -- additional themes/colorschemes
   { import = 'plugins.conform' }, -- auto-formatting
   -- { import = 'plugins.debug' }, -- dap plugin for debugging code, configured for golang by default
@@ -103,6 +106,7 @@ require('lazy').setup({
   -- { import = 'plugins.lint' }, -- provides multiple linters
   { import = 'plugins.mini' }, -- collection of small plugins
   { import = 'plugins.neo-tree' }, -- directory browser
+  { import = 'plugins.noice' }, -- a noice looking cli
   { import = 'plugins.nvim-lspconfig' }, -- main LSP configuration
   { import = 'plugins.nvim-treesitter' }, -- highlight, edit, and navigate code
   { import = 'plugins.telescope' }, -- telescope fuzzy finder

@@ -13,13 +13,21 @@ return {
   keys = {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
+
   opts = {
-    filesystem = {
-      window = {
-        mappings = {
-          ['\\'] = 'close_window',
-        },
+    sources = { 'filesystem', 'buffers', 'git_status' },
+
+    source_selector = {
+      winbar = true,
+      sources = {
+        { source = 'filesystem', display_name = '󰉓 files' }, -- folder
+        { source = 'buffers', display_name = '󰈙 buffers' }, -- file
+        { source = 'git_status', display_name = '󰊢 git' }, -- git
       },
+    },
+
+    filesystem = {
+      window = { mappings = { ['\\'] = 'close_window' } },
     },
   },
 }
