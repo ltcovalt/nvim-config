@@ -54,6 +54,15 @@ vim.o.cursorline = true -- highlight the line the cursor is on
 vim.o.scrolloff = 8 -- number of lines to keep visible above and below the cursor
 vim.o.confirm = true -- show confirm dialog when closing an unsaved buffer
 
+-- auto indent options
+local indentWidth = 2
+vim.o.expandtab = true
+vim.o.shiftwidth = indentWidth
+vim.o.tabstop = indentWidth
+vim.o.softtabstop = indentWidth
+vim.o.autoindent = true
+vim.o.smartindent = true
+
 -- NOTE: [[ KEYMAPS ]]
 --  See `:help vim.keymap.set()`
 require 'keymaps'
