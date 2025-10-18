@@ -114,6 +114,7 @@ require('lazy').setup({
   { import = 'plugins.lazydev' }, -- configures LUA LSP for nvim congigs
   -- { import = 'plugins.lint' }, -- provides multiple linters
   { import = 'plugins.lsp' }, -- main LSP configuration
+  { import = 'plugins.lualine' }, -- status bar
   { import = 'plugins.markdown' }, -- mdx syntax highlighting
   { import = 'plugins.mini' }, -- collection of small plugins
   { import = 'plugins.neo-tree' }, -- directory browser
