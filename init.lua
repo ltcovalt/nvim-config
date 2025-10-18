@@ -113,13 +113,13 @@ require('lazy').setup({
   { import = 'plugins.indent_line' }, -- displays visual line indents
   { import = 'plugins.lazydev' }, -- configures LUA LSP for nvim congigs
   -- { import = 'plugins.lint' }, -- provides multiple linters
+  { import = 'plugins.lsp' }, -- main LSP configuration
   { import = 'plugins.markdown' }, -- mdx syntax highlighting
   { import = 'plugins.mini' }, -- collection of small plugins
   { import = 'plugins.neo-tree' }, -- directory browser
   { import = 'plugins.noice' }, -- a noice looking cli
-  { import = 'plugins.nvim-lspconfig' }, -- main LSP configuration
-  { import = 'plugins.nvim-treesitter' }, -- highlight, edit, and navigate code
   { import = 'plugins.telescope' }, -- telescope fuzzy finder
+  { import = 'plugins.treesitter' }, -- highlight, edit, and navigate code
   { import = 'plugins.todo-comments' }, -- todo/note/warn
   { import = 'plugins.which-key' }, -- displays live previews when typing keybinds
 }, {
